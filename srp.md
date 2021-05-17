@@ -1,5 +1,5 @@
 SRP 
-Single Responsibility Priciple:
+Single Responsibility Principle:
 
 Every Role should have single responsibility.
 
