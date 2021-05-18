@@ -14,7 +14,7 @@ A Developer should not be responsible for creating a design or testing a softwar
 A developer should have one relavent responbility. He/She should not have a multiple responsibility which are not relevent to him/her
 
 Voilation:
-If a developer is asked to test an application or is asked to design. an application. Since Testing and architecturing a software is not a developer's responsibility.
+If a developer is asked to test an application or is asked to design an application. Since Testing and architecturing a software is not a developer's responsibility.
 
 
 
