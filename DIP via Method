@@ -1,0 +1,121 @@
+namespace ConsoleApp2
+{
+    public interface IQueueDataStructure
+    {
+        void Enqueue();
+        object Dequeue();
+        void Clear();
+    }
+
+    public class SimpleQueue : IQueueDataStructure
+    {
+        public void Clear()
+        {
+            //Clear operation
+        }
+
+        public object Dequeue()
+        {
+            //Dequeu operation
+            return default(object);
+        }
+
+        public void Enqueue()
+        {
+            //Enqueue
+        }
+    }
+    public class PriorityQueue : IQueueDataStructure
+    {
+        public void Clear()
+        {
+            //Clear operation
+        }
+
+        public object Dequeue()
+        {
+            //Dequeu operation
+            return default(object);
+        }
+
+        public void Enqueue()
+        {
+            //Enqueue
+        }
+    }
+    public class CircularQueue : IQueueDataStructure
+    {
+        public void Clear()
+        {
+            //Clear operation
+        }
+
+        public object Dequeue()
+        {
+            //Dequeu operation
+            return default(object);
+        }
+
+        public void Enqueue()
+        {
+            //Enqueue
+        }
+    }
+    public class DoubleEndedQueue : IQueueDataStructure
+    {
+        public void Clear()
+        {
+            //Clear operation
+        }
+
+        public object Dequeue()
+        {
+            //Dequeu operation
+            return default(object);
+        }
+
+        public void Enqueue()
+        {
+            //Enqueue
+        }
+    }
+
+
+    public class TaskSchedular
+    {
+        public IQueueDataStructure queue;
+        public void SetDependency(IQueueDataStructure _queue)
+        {
+            this.queue = _queue;
+        }
+        public void ScheduleTask()
+        {
+            queue.Enqueue();
+        }
+    }
+
+    public class TaskManager
+    {
+        public IQueueDataStructure queue;
+        public void SetDependency(IQueueDataStructure _queue)
+        {
+            this.queue = _queue;
+        }
+        public void SomeTask()
+        {
+            queue.Dequeue();
+        }
+    }
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            TaskSchedular taskSchedular = new TaskSchedular();
+            taskSchedular.SetDependency(new DoubleEndedQueue());
+            taskSchedular.ScheduleTask();
+            TaskManager taskManager = new TaskManager();
+            taskManager.SetDependency(new SimpleQueue());
+            taskManager.SomeTask();
+        }        
+    }
+}
