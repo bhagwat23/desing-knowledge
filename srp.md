@@ -10,7 +10,7 @@ A Developer's responsbilities are:
 2. Write Unit test 
 3. Peer code review
 
-A Developer should not be responsible for creating a design or testing a software. Since a developer responsibilities is to write code, unit test and code review.
+A Developer should not be responsible for creating a design or testing a software. Since a developer responsibility is to write code, unit test and code review.
 A developer should have one relavent responbility. He/She should not have a multiple responsibility which are not relevent to him/her
 
 Voilation:
