@@ -1,0 +1,141 @@
+
+Strategy Pattern:
+
+Algorithms can be changed at runtime
+
+For example:
+If we want to sort an array using Bubble sort, heapsort , quicksort and Insertion sort. We can use strategy pattern to select which sort algorithm can be used at runtime.
+
+
+Composite Pattern:
+
+This design pattern can be used when we need to represent a heirarchy of an object. A class that contains group of its own objects. It can be represented in parent and child relationship like a tree data structure.
+
+For example:
+An organization has a CEO. All business leaders reports to a CEO. Every business leaders have number of Project Leaders. Each project leaders report to their respective business leaders. Similarly, every Project Leaders have number of employees report to their Project leader. This forms an Heirarchy of Employees.
+
+
+An Example with combination of Strategy and Composite Pattern
+=============================================================
+
+using System.Collections.Generic;
+
+namespace DesignPattern
+{
+    public class PatientDataModel
+    {
+        public string MRN { get; set; }
+        public string Name { get; set; }
+        public string ContactNumber { get; set; }
+        public string EmailId { get; set; }
+    }
+    public interface IPatientDataMemoryRespository
+    {
+         List<PatientDataModel> GetAllPatients();
+    }
+    public class PatientDataMemoryRepository: IPatientDataMemoryRespository
+    {
+        private List<PatientDataModel> _patientStore;
+        public List<PatientDataModel> GetAllPatients()
+        {
+            return _patientStore;
+        }
+    }
+    public class PatientSearchService
+    {
+        IPatientDataMemoryRespository _repositoryRef;
+        public PatientSearchService(IPatientDataMemoryRespository repository)
+        {
+            this._repositoryRef = repository;
+        }
+      
+        public PatientDataModel Search(ISearchStrategy strategy)
+        {
+            List<PatientDataModel> patientList = _repositoryRef.GetAllPatients();
+            PatientDataModel searchResult = strategy.Search(patientList);
+            return searchResult;
+        }
+    }
+
+    public interface ISearchStrategy
+    {
+        PatientDataModel Search(List<PatientDataModel> patientList);
+    }
+
+    public class SearchByMRN : ISearchStrategy
+    {
+        public string MRNKey { get; set; }
+        public PatientDataModel Search(List<PatientDataModel> patientList)
+        {
+            return patientList.Find(x => x.MRN.Equals(MRNKey));
+        }
+    }
+    public class SearchByName : ISearchStrategy
+    {
+        public string Name { get; set; }
+        public PatientDataModel Search(List<PatientDataModel> patientList)
+        {
+            return patientList.Find(x => x.Name.Equals(Name));
+        }
+    }
+    public class SearchByContactNumber : ISearchStrategy
+    {
+        public string ContactNumber { get; set; }
+        public PatientDataModel Search(List<PatientDataModel> patientList)
+        {
+            return patientList.Find(x => x.ContactNumber.Equals(ContactNumber));
+        }
+    }
+    public class SearchStregry : ISearchStrategy
+    {
+        public List<ISearchStrategy> Strategies;
+
+        public SearchStregry()
+        {
+            Strategies = new List<ISearchStrategy>();
+        }
+
+        public PatientDataModel Search(List<PatientDataModel> patientList)
+        {
+            PatientDataModel searchResult = new PatientDataModel();
+            foreach (ISearchStrategy strategy in Strategies)
+            {
+                if(strategy is SearchByMRN || strategy is SearchByName)
+                {
+                    searchResult = strategy.Search(patientList);
+                }
+            }
+            
+            return searchResult;
+        }
+
+        public void Add(ISearchStrategy strategy)
+        {
+            Strategies.Add(strategy);
+        }
+
+        public void Remove(ISearchStrategy strategy)
+        {
+            Strategies.Remove(strategy);
+        }
+    }
+
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            PatientSearchService searchService = new PatientSearchService(new PatientDataMemoryRepository());
+            PatientDataModel searchByMRN = searchService.Search(new SearchByMRN()); // Search by MRN key
+
+            PatientDataModel searchByName = searchService.Search(new SearchByName()); // Search by Name
+
+            PatientDataModel searchByContact = searchService.Search(new SearchByContactNumber()); // Search by contact number
+
+            SearchStregry strategy = new SearchStregry();
+            strategy.Add(new SearchByMRN());  //Adding strategy for search by MRN
+            strategy.Add(new SearchByName()); // Adding strategy for search by name
+            PatientDataModel searchByMRN_Name = searchService.Search(new SearchStregry()); //Serch by MRN Key and Name
+
+        }
+    }
+}
