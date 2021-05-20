@@ -56,7 +56,10 @@ namespace CompositeDesignPattern
         }
         public void Update()
         {
-
+            foreach(Employee employee in EmployeeList)
+            {
+                employee.Update();
+            }
         }
         public void AddEmployee(Employee employee)
         {
