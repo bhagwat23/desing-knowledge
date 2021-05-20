@@ -1,0 +1,96 @@
+Sample Application of Composite desing pattern:
+
+using System.Collections.Generic;
+
+namespace CompositeDesignPattern
+{
+    public class Employee
+    {
+        public void Update()
+        {
+
+        }
+    }
+
+    public class Developer:Employee
+    {
+        public void Update()
+        {
+
+        }
+    }
+    public class Tester : Employee
+    {
+        public void Update()
+        {
+
+        }
+    }
+
+    public class Manager : Employee
+    {
+        public List<Employee> EmployeeList;
+        public Manager()
+        {
+            EmployeeList = new List<Employee>();
+        }
+        public void Update()
+        {
+
+        }
+        public void AddEmployee(Employee employee)
+        {
+            EmployeeList.Add(employee);
+        }
+        public void RemoveEmployee(Employee employee)
+        {
+            EmployeeList.Remove(employee);
+        }
+    }
+    public class HR : Employee
+    {
+        public List<Employee> EmployeeList;
+        public HR()
+        {
+            EmployeeList = new List<Employee>();
+        }
+        public void Update()
+        {
+
+        }
+        public void AddEmployee(Employee employee)
+        {
+            EmployeeList.Add(employee);
+        }
+        public void RemoveEmployee(Employee employee)
+        {
+            EmployeeList.Remove(employee);
+        }
+    }
+
+    public class Management
+    {
+        public Management()
+        {
+
+        }
+        public void Update(Employee emp)
+        {
+            emp.Update();
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Management mgmt = new Management();
+            HR emp = new HR();
+            emp.AddEmployee(new Developer());
+            emp.AddEmployee(new Developer());
+            emp.AddEmployee(new Tester());
+            emp.AddEmployee(new Manager());
+
+            mgmt.Update(emp);
+        }
+    }
+}
