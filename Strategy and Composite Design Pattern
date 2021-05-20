@@ -4,7 +4,7 @@ Strategy Pattern:
 Algorithms can be changed at runtime
 
 For example:
-If we want to sort an array using Bubble sort, heapsort , quicksort and Insertion sort. We can use strategy pattern to select which sort algorithm can be used at runtime.
+If we want to sort an array using Bubble sort, heapsort , quicksort or Insertion sort. We can use strategy pattern to select which sorting algorithm can be used at runtime.
 
 
 Composite Pattern:
