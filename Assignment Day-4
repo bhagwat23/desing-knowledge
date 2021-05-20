@@ -1,0 +1,128 @@
+//every shapes need to be printed on every printers
+//Print Cartesian Product of Printer and shapes
+
+using System;
+using System.Collections.Generic;
+
+namespace Assignment4
+{
+    public abstract class Shape
+    {
+        public virtual void Draw()
+        {
+            Console.WriteLine("Shape");
+        }
+    }
+
+    public class Rectangle : Shape
+    {
+        public string ShapeName { get; set; }
+        public Rectangle()
+        {
+            ShapeName = "Rectangle";
+        }
+        public override void Draw()
+        {
+            Console.WriteLine("ShapeName: " + ShapeName);
+        }
+    }
+    public class Square : Shape
+    {
+        public string Name { get; set; }
+        public Square()
+        {
+            Name = "Square";
+        }
+        public override void Draw()
+        {
+            Console.WriteLine("Name: " + Name);
+        }
+    }
+    public class Circle : Shape
+    {
+        public string Identity { get; set; }
+        public Circle()
+        {
+            Identity = "Circle";
+        }
+        public override void Draw()
+        {
+            Console.WriteLine("Identity: " + Identity);
+        }
+    }
+
+    public abstract class Printer
+    {
+        public virtual void Print(Shape shape)
+        {
+            Console.WriteLine("Printer");
+            shape.Draw();
+        }
+    }
+    public class InkJet:Printer
+    {       
+        public override void Print(Shape _shape)
+        {
+            Console.WriteLine("InkJet Printer");
+            _shape.Draw();            
+        }
+    }
+    public class Laser : Printer
+    {
+       
+        public override void Print(Shape _shape)
+        {
+            Console.WriteLine("Laser Printer");
+            _shape.Draw();
+        }
+    }
+    public class DotMatrix : Printer
+    {
+        
+        public override void Print(Shape _shape)
+        {
+            Console.WriteLine("DotMatrix Printer");
+            _shape.Draw();
+        }
+    }
+
+    public class Picture
+    {
+        public List<Shape> Shapes;
+        public List<Printer> Printers;
+        public Picture()
+        {
+            Shapes = new List<Shape>();
+            Printers = new List<Printer>();
+        }
+        public void PrintAll()
+        {
+            foreach(Printer printer in Printers)
+            {                
+                foreach(Shape shape in Shapes)
+                {
+                    printer.Print(shape);
+                    Console.WriteLine();
+                }
+            }
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Picture pic = new Picture();
+            pic.Printers.Add(new InkJet());
+            pic.Printers.Add(new Laser());
+            pic.Printers.Add(new DotMatrix());
+
+            pic.Shapes.Add(new Rectangle());
+            pic.Shapes.Add(new Square());
+            pic.Shapes.Add(new Circle());
+
+            pic.PrintAll();
+        }
+    }
+}
+
