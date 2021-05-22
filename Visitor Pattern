@@ -1,0 +1,130 @@
+//DocumentPart has different parts like Text,Header,Link and Footer
+//All the DocumentParts need to be converted to PDF or HTML.
+
+using System;
+using System.Collections.Generic;
+
+namespace VisitorPattern
+{
+    public abstract class DocumentPart
+    {
+        public virtual void Convert(IDocumentConverter docConverter)
+        {
+            Console.WriteLine("Document Part");
+        }
+    }
+    public class Text : DocumentPart
+    {
+        public override void Convert(IDocumentConverter docConverter)
+        {
+            Console.WriteLine("Document Part - Text");
+            docConverter.Convert(this);
+        }
+    }
+    public class Header : DocumentPart
+    {
+        public override void Convert(IDocumentConverter docConverter)
+        {
+            Console.WriteLine("Document Part - Header");
+            docConverter.Convert(this);
+        }
+    }
+    public class Link : DocumentPart
+    {
+        public override void Convert(IDocumentConverter docConverter)
+        {
+            Console.WriteLine("Document Part - Link");
+            docConverter.Convert(this);
+        }
+    }
+    public class Footer : DocumentPart
+    {
+        public override void Convert(IDocumentConverter docConverter)
+        {
+            Console.WriteLine("Document Part - Footer");
+            docConverter.Convert(this);
+        }
+    }
+
+    public interface IDocumentConverter
+    {
+        void Convert(Text text);
+        void Convert(Header header);
+        void Convert(Footer footer);
+        void Convert(Link link);
+    }
+    public class PDFConverter : IDocumentConverter
+    {
+        public void Convert(Text text)
+        {
+            Console.WriteLine("PDF Converter Text");
+        }
+
+        public void Convert(Header header)
+        {
+            Console.WriteLine("PDF Converter Header");
+        }
+
+        public void Convert(Footer footer)
+        {
+            Console.WriteLine("PDF Converter Footer");
+        }
+
+        public void Convert(Link link)
+        {
+            Console.WriteLine("PDF Converter Link");
+        }
+    }
+    public class HtmlConverter : IDocumentConverter
+    {
+        public void Convert(Text text)
+        {
+            Console.WriteLine("HTML Converter Text");
+        }
+
+        public void Convert(Header header)
+        {
+            Console.WriteLine("HTML Converter Header");
+        }
+
+        public void Convert(Footer footer)
+        {
+            Console.WriteLine("HTML Converter Footer");
+        }
+
+        public void Convert(Link link)
+        {
+            Console.WriteLine("HTML Converter Link");
+        }
+    }
+
+    public class Document
+    {
+        public List<DocumentPart> DocumentPart;
+        public Document()
+        {
+            DocumentPart = new List<DocumentPart>();
+        }
+        public void Convert(IDocumentConverter docConverter)
+        {
+
+            foreach(DocumentPart doc in DocumentPart)
+            {
+                doc.Convert(docConverter);
+            }
+        }
+    }
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            Document document = new Document();
+            document.DocumentPart.Add(new Text());
+            document.DocumentPart.Add(new Header());
+            document.DocumentPart.Add(new Link());
+            document.DocumentPart.Add(new Footer());
+
+            document.Convert(new PDFConverter());
+        }
+    }
+}
