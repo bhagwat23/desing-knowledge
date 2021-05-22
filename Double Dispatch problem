@@ -1,0 +1,74 @@
+namespace DoubleDispatch
+{
+    public interface IP
+    {
+        void AM(IV v);
+    }
+    public class A : IP
+    {
+        public virtual void AM(IV v)
+        {
+            v.M(this);
+        }
+    }
+
+
+
+    public class B : A
+    {
+        public override void AM(IV v)
+        {
+            v.M(this);
+        }
+    }
+
+    //Pure Abstract Class
+    public interface IV
+    {
+        void M(A obj);
+        void M(B obj);
+    }
+    public class C : IV
+    {
+        public virtual void M(A obj)
+        {
+            //obj.AM();
+        }
+
+        public virtual void M(B obj)
+        {
+           // obj.AM();
+        }
+    }
+
+    public class D : C
+    {
+
+        public override void M(A obj)
+        {
+           
+        }
+
+        public override void M(B obj)
+        {
+            
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+
+            ////IP aptr = new B();
+            ////IV cptr = new D();
+
+            //aptr.AM(cptr);
+
+            IP aptr = new B();
+            IV cptr = new D();
+            aptr.AM(cptr);
+
+        }
+    }
+}
