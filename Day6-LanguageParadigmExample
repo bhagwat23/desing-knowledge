@@ -1,0 +1,124 @@
+using System.Collections.Generic;
+
+namespace ProgPradigm
+{
+    public abstract class Paradigm
+    {
+        public virtual string GetParadigm()
+        {
+            return "Default Paradigm";
+        }
+    }
+    public class Procedural : Paradigm
+    {
+        public override string GetParadigm()
+        {
+            return "Procedural Paradigm";
+        }
+    }
+    public class ObjectOriented : Paradigm
+    {
+        public override string GetParadigm()
+        {
+            return "ObjectOriented Paradigm";
+        }
+    }
+    public class HateroGeneous : Paradigm
+    {
+        public List<Paradigm> Paradigms;
+        public HateroGeneous()
+        {
+            Paradigms = new List<Paradigm>();
+        }
+        public void AddParadigm(Paradigm paradigm)
+        {
+            Paradigms.Add(paradigm);
+        }
+       
+        public override string GetParadigm()
+        {
+            return "HateroGeneous Paradigm";
+        }
+    }
+
+    public interface IProgLanguage
+    {
+        Paradigm Paradigm { get; set; }
+        string GetUnit();
+        string GetName();
+        void SetParadigm(Paradigm paradigm);
+    }
+    public class LangC : IProgLanguage
+    {
+        public Paradigm Paradigm { get; set; }
+        public void SetParadigm(Paradigm paradigm)
+        {
+            Paradigm = paradigm;
+        }
+
+        public string GetName()
+        {
+            return "Pragramming Language - C";
+        }
+
+        public string GetUnit()
+        {
+            return "C units";
+        }
+    }
+    public class LangJava : IProgLanguage
+    {
+        public Paradigm Paradigm { get; set; }
+        public void SetParadigm(Paradigm paradigm)
+        {
+            Paradigm = paradigm;
+        }
+        public string GetName()
+        {
+            return "Pragramming Language - Java";
+        }
+
+        public string GetUnit()
+        {
+            return "Java units";
+        }
+    }
+    public class LangCPP : IProgLanguage
+    {
+        public Paradigm Paradigm { get; set; }
+        public void SetParadigm(Paradigm paradigm)
+        {
+            Paradigm = paradigm;
+            var _paradigm = Paradigm as HateroGeneous;
+            _paradigm.AddParadigm(new Procedural());
+            _paradigm.AddParadigm(new ObjectOriented());
+        }
+      
+        public string GetName()
+        {
+            return "Pragramming Language - C";
+        }
+
+        public string GetUnit()
+        {
+            return "C units";
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            IProgLanguage progLanguage = new LangC();
+            progLanguage.SetParadigm(new Procedural());
+            string name = progLanguage.GetName();
+            string unit = progLanguage.GetUnit();
+            string paradigm = progLanguage.Paradigm.GetParadigm();
+
+            progLanguage = new LangCPP();
+            progLanguage.SetParadigm(new HateroGeneous());
+            name = progLanguage.GetName();
+            unit = progLanguage.GetUnit();
+            paradigm = progLanguage.Paradigm.GetParadigm();
+        }
+    }
+}
