@@ -1,0 +1,98 @@
+using System;
+
+namespace SecurityExample
+{
+    public interface IProtocol
+    {
+        void EmailProtocol();
+    }
+    public class OldEmailProtocol : IProtocol
+    {
+        public void EmailProtocol()
+        {
+            Console.WriteLine("Old Email Protocol");
+        }
+    }
+    public class NewEmailProtocol : IProtocol
+    {
+        public void EmailProtocol()
+        {
+            Console.WriteLine("New Email Protocol");
+        }
+    }
+
+    public interface IEmailSecurity
+    {
+        IProtocol _protocol { get; set; }
+        void SetEmailProtocol(IProtocol protocol);
+
+        void EmailProtocolHandler();
+    }
+   
+
+    public class MACOSSecurity : IEmailSecurity
+    {
+        public IProtocol _protocol { get; set; }
+       
+
+        public void SetEmailProtocol(IProtocol protocol)
+        {
+            _protocol = protocol;
+        }
+        public void EmailProtocolHandler()
+        {
+            _protocol.EmailProtocol();
+        }
+    }
+    public class MACOSXSecurity : IEmailSecurity
+    {
+        public IProtocol _protocol { get; set; }
+
+        public void SetEmailProtocol(IProtocol protocol)
+        {
+            _protocol = protocol;
+        }
+        public void EmailProtocolHandler()
+        {
+            _protocol.EmailProtocol();
+        }
+    }
+    public class Win95Security : IEmailSecurity
+    {
+        public IProtocol _protocol { get; set; }
+
+        public void SetEmailProtocol(IProtocol protocol)
+        {
+            _protocol = protocol;
+        }
+        public void EmailProtocolHandler()
+        {
+            _protocol.EmailProtocol();
+        }
+    }
+    public class WinXPSecurity : IEmailSecurity
+    {
+        public IProtocol _protocol { get; set; }
+
+        public void SetEmailProtocol(IProtocol protocol)
+        {
+            _protocol = protocol;
+        }
+        public void EmailProtocolHandler()
+        {
+            _protocol.EmailProtocol();
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            IEmailSecurity emailSecurity = new MACOSSecurity();
+            emailSecurity.SetEmailProtocol(new OldEmailProtocol());
+            emailSecurity.EmailProtocolHandler();
+
+            emailSecurity.SetEmailProtocol(new NewEmailProtocol());
+            emailSecurity.EmailProtocolHandler();
+        }
+    }
+}
