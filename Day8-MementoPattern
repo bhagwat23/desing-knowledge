@@ -1,0 +1,128 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Day8_MementoPatern
+{
+    public class Memento
+    {
+        private String state;
+        public Memento(String state)
+        {
+            this.state = state;
+        }
+        public String GetState()
+        {
+            return state;
+        }
+    }
+    public class TextBox
+    {
+        private string state;
+        
+        public void OnTextchange(string content)
+        {
+            state = content;
+        }
+
+        public string GetState()
+        {
+            return state;
+        }
+        public Memento SaveStateToMemento()
+        {
+            return new Memento(state);
+        }
+        public void GetStateFromMemento(Memento memento)
+        {
+            state = memento.GetState();
+        }
+       
+      
+    }
+
+    public class CareTaker
+    {
+        List<Memento> mementoList = new List<Memento>();
+        List<Memento> backupMementoList = new List<Memento>();
+        public void Add(Memento state)
+        {
+            mementoList.Add(state);
+        }
+        public Memento Get(int index)
+        {
+            return mementoList[index];
+        }
+        public void Undo()
+        {
+            if (mementoList.Count == 0)
+                return;
+            int lastElementIndex = mementoList.Count - 1;
+            Memento memento = mementoList[lastElementIndex];
+            mementoList.RemoveAt(lastElementIndex);
+            backupMementoList.Add(memento);
+        }
+        public void Redo()
+        {
+            if (backupMementoList.Count == 0)
+                return;
+            int lastElementIndex = backupMementoList.Count - 1;
+            Memento memento = backupMementoList[lastElementIndex];
+            backupMementoList.RemoveAt(lastElementIndex);
+            mementoList.Add(memento);
+        }
+        public void Print()
+        {
+            Console.WriteLine("Displaying Current States");
+            for(int i = 0; i < mementoList.Count ; i++)
+            {
+                Console.Write(mementoList[i].GetState() + "  ");
+            }
+            Console.WriteLine();
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            CareTaker careTaker = new CareTaker();
+            TextBox textBox = new TextBox();
+            textBox.OnTextchange("A");
+            careTaker.Add(textBox.SaveStateToMemento());
+            textBox.OnTextchange("B");
+            careTaker.Add(textBox.SaveStateToMemento());
+            textBox.OnTextchange("C");
+            careTaker.Add(textBox.SaveStateToMemento());
+            careTaker.Print();
+            careTaker.Undo();
+            careTaker.Print();
+            textBox.OnTextchange("D");
+            careTaker.Add(textBox.SaveStateToMemento());
+            textBox.OnTextchange("E");
+            careTaker.Add(textBox.SaveStateToMemento());
+            textBox.OnTextchange("F");
+            careTaker.Add(textBox.SaveStateToMemento());
+            careTaker.Print();
+            careTaker.Undo();
+            careTaker.Undo();
+            careTaker.Print();
+            textBox.OnTextchange("G");
+            careTaker.Add(textBox.SaveStateToMemento());
+            textBox.OnTextchange("H");
+            careTaker.Add(textBox.SaveStateToMemento());
+            careTaker.Print();
+            careTaker.Undo();
+            careTaker.Undo();
+            careTaker.Print();
+            careTaker.Undo();
+            careTaker.Print();
+            careTaker.Redo();
+            careTaker.Print();
+            careTaker.Redo();
+            careTaker.Print();
+        }
+    }
+
+}
