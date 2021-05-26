@@ -1,0 +1,102 @@
+using System;
+
+namespace Day8_BuilderPattern
+{
+    public interface IHouse
+    {
+        IHouse SetBasement();
+        IHouse SetStructure();
+        IHouse SetWalls();
+        IHouse SetInteriors();
+    }
+    public class ConcreateHouse : IHouse
+    {
+        public IHouse SetBasement()
+        {
+            Console.WriteLine("Set Basement");
+            return this;
+        }
+
+        public IHouse SetInteriors()
+        {
+            Console.WriteLine("Set Interiors");
+            return this;
+        }
+
+        public IHouse SetStructure()
+        {
+            Console.WriteLine("Set Structure");
+            return this;
+        }
+
+        public IHouse SetWalls()
+        {
+            Console.WriteLine("Set Walls");
+            return this;
+        }
+    }
+    public interface IHouseBuilder
+    {
+        void BuildHouse();
+        IHouse GetHouse();
+    }
+    public class RCCHouseBuilder : IHouseBuilder
+    {
+        IHouse house;
+        public void BuildHouse()
+        {
+            house = new ConcreateHouse();
+            house.SetBasement().SetWalls().SetInteriors().SetStructure();
+        }
+
+        public IHouse GetHouse()
+        {
+            return house;
+        }
+    }
+    public class IglooBuilder : IHouseBuilder
+    {
+        IHouse house;
+        public void BuildHouse()
+        {
+            house = new ConcreateHouse();
+            house.SetBasement().SetStructure().SetWalls().SetInteriors();
+        }
+
+        public IHouse GetHouse()
+        {
+            return house;
+        }
+    }
+    public class FabricatedBuilder : IHouseBuilder
+    {
+        IHouse house;
+        public void BuildHouse()
+        {
+            house = new ConcreateHouse();
+            house.SetBasement().SetWalls().SetInteriors().SetStructure();
+        }
+
+        public IHouse GetHouse()
+        {
+            return house;
+        }
+    }
+    public class Contractor
+    {
+        public IHouse ConstructHouse(IHouseBuilder builder)
+        {
+            builder.BuildHouse();
+            return builder.GetHouse();
+        }
+    }
+    public class Program
+    {
+        static void Main(string[] args)
+        {
+            Contractor contractor = new Contractor();
+            IHouse iglooHouse = contractor.ConstructHouse(new IglooBuilder());
+            
+        }
+    }
+}
