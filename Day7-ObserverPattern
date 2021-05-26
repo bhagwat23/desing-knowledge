@@ -1,0 +1,89 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Day7_ObserverPattern
+{
+    public interface IObserver
+    {
+        void Update();
+    }
+    public class ObserverA : IObserver
+    {
+        public void Update()
+        {
+            Console.WriteLine("Update ObserverA");
+        }
+    }
+    public class ObserverB : IObserver
+    {
+        public void Update()
+        {
+            Console.WriteLine("Update ObserverB");
+        }
+    }
+    public class ObserverC : IObserver
+    {
+        public void Update()
+        {
+            Console.WriteLine("Update ObserverC");
+        }
+    }
+    public class Subject
+    {
+        private List<IObserver> observerList;
+        private int state;
+        public Subject()
+        {
+            observerList = new List<IObserver>();
+        }
+        public int GetState()
+        {
+            return state;
+        }
+        public void SetState(int state)
+        {
+            this.state = state;
+            NotifyAllObservers();
+        }
+        private void NotifyAllObservers()
+        {
+            foreach(IObserver observer in observerList)
+            {
+                observer.Update();
+            }
+        }
+
+        public void Subscribe(IObserver observer)
+        {
+            observerList.Add(observer);
+        }
+        public void UnScubscribe(IObserver observer)
+        {
+            observerList.Remove(observer);
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Subject subject = new Subject();
+            IObserver observerA = new ObserverA();
+            IObserver observerB = new ObserverB();
+            IObserver observerC = new ObserverC();
+
+            subject.Subscribe(observerA);
+            subject.Subscribe(observerB);
+            subject.Subscribe(observerC);
+
+            subject.SetState(10);
+
+            subject.UnScubscribe(observerA);
+            subject.UnScubscribe(observerB);
+            subject.UnScubscribe(observerC);
+            subject.SetState(10);
+        }
+    }
+}
