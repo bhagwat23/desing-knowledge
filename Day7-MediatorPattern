@@ -1,0 +1,86 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Day7_MediatorPattern
+{ 
+    public interface ISubscribe
+    {
+        void Update(string eventName);
+    }
+    public interface IEventAggregator
+    {
+        void Publish(string eventName);
+        void Subscribe(string eventName, ISubscribe subscriberAddress);
+    }
+    public class EventAggregator : IEventAggregator
+    {
+        Dictionary<string, List<ISubscribe>> _routingTable = new Dictionary<string, List<ISubscribe>>();
+
+        public void Subscribe(string eventName, ISubscribe subscriberAddress)
+        {
+            if (_routingTable.ContainsKey(eventName))
+            {
+                _routingTable[eventName].Add(subscriberAddress);
+            }
+            else
+            {
+                _routingTable.Add(eventName, new List<ISubscribe> { subscriberAddress });
+            }
+        }
+
+        public void Publish(string eventName)
+        {
+            if (_routingTable.ContainsKey(eventName))
+            {
+                List<ISubscribe> _subscribes = _routingTable[eventName];
+                foreach(ISubscribe subscriber in _subscribes)
+                {
+                    subscriber.Update(eventName);
+                }
+            }
+        }
+    }
+
+    public class ModuleA
+    {
+        IEventAggregator _mediator;
+        public ModuleA(IEventAggregator mediator)
+        {
+            this._mediator = mediator;
+        }
+        public void PublishEvent()
+        {
+            this._mediator.Publish("E1");
+        }
+    }
+    public class ModuleB : ISubscribe
+    {
+        IEventAggregator _mediator;
+        public ModuleB(IEventAggregator mediator)
+        {
+            _mediator = mediator;
+            _mediator.Subscribe("E1", this);
+        }
+        public void Update(string eventName)
+        {
+            if(eventName.Equals("E1"))
+            {
+                Console.WriteLine("ModuleB Subscribed Event - E1");
+            }
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            IEventAggregator eventAgg = new EventAggregator();
+            ModuleA moduleA = new ModuleA(eventAgg);
+            ModuleB moduleB = new ModuleB(eventAgg);
+            moduleA.PublishEvent();
+                   
+        }
+    }
+}
