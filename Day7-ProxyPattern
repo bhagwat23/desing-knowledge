@@ -1,0 +1,61 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Day7_ProxyPattern
+{
+    public interface IGateway
+    {
+        void AcceptRequest(string url);
+    }
+    public class InternetGateway : IGateway
+    {
+        private List<string> blackListedUrls = new List<string>();
+        public InternetGateway()
+        {
+            InitiliazeBlackListedUrls();
+        }
+
+        private void InitiliazeBlackListedUrls()
+        {
+            blackListedUrls.Add("abc.com");
+            blackListedUrls.Add("pqr.com");
+            blackListedUrls.Add("xyz.com");
+            blackListedUrls.Add("jkl.com");
+            blackListedUrls.Add("mno.com");
+        }
+
+        public void AcceptRequest(string url)
+        {
+            if (blackListedUrls.Contains(url))
+            {
+                Console.WriteLine("Can not connect to this url: " + url);
+                return;
+            }            
+            Console.WriteLine("Connected to : " + url);
+        }
+    }
+    public class InternetGatwayProxy : IGateway
+    {
+        private IGateway gateway;
+        public InternetGatwayProxy()
+        {
+            gateway = new InternetGateway();            
+        }
+        public void AcceptRequest(string url)
+        {
+            gateway.AcceptRequest(url);
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            IGateway gateway = new InternetGatwayProxy();
+            gateway.AcceptRequest("abc.com");
+            gateway.AcceptRequest("test.com");
+        }
+    }
+}
