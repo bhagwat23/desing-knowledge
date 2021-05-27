@@ -1,0 +1,72 @@
+using System;
+
+namespace Day9_Facade_Pattern
+{
+    public class FuelPump
+    {
+        public void Pump()
+        {
+            Console.WriteLine("Pump");
+        }
+    }
+    public class Ignition
+    {
+        public void PowerUp()
+        {
+            Console.WriteLine("Power up");
+        }
+    }
+    public class Starter
+    {
+        public void Revolve()
+        {
+            Console.WriteLine("Revolve");
+        }
+    }
+    public class Engine
+    {
+        FuelPump pump;
+        Ignition ignition;
+        Starter starter;
+        public Engine()
+        {
+            pump = new FuelPump();
+            ignition = new Ignition();
+            starter = new Starter();
+        }
+        public void Start()
+        {
+            pump.Pump();
+            ignition.PowerUp();
+            starter.Revolve();
+        }
+    }
+    public class Car
+    {
+        Engine engine;
+        public Car()
+        {
+            engine = new Engine();
+        }
+        public void Sart()
+        {
+            engine.Start();
+        }
+    }
+    public class Driver
+    {
+        
+        public void Drive(Car car)
+        {
+            car.Sart();
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Driver driver = new Driver();
+            driver.Drive(new Car());
+        }
+    }
+}
