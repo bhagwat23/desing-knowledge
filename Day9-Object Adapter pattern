@@ -1,0 +1,74 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Day9_Object_Adapter_Pattern
+{
+    public interface IXMLContentProvider
+    {
+        string GetContent();
+        string GetNode();
+    }
+    public class LegacyCode : IXMLContentProvider
+    {
+        public string GetContent()
+        {
+            return "XML Content";
+        }
+
+        public string GetNode()
+        {
+            return "XML Node";
+        }
+    }
+    public interface IJsonDataProvider
+    {
+        string GetContent();
+        string GetObject();
+    }
+    public class Adapter : IJsonDataProvider
+    {
+        LegacyCode legacyCode;
+        public Adapter(LegacyCode _legancyCode)
+        {
+            legacyCode = _legancyCode;
+        }
+        public string GetContent()
+        {
+            return legacyCode.GetContent();
+        }
+
+        public string GetObject()
+        {
+            return legacyCode.GetNode();
+        }
+    }
+    public class NewGenClient
+    {
+        IJsonDataProvider jsonDataProvider;
+        public NewGenClient(IJsonDataProvider jsonData)
+        {
+            jsonDataProvider = jsonData;
+        }
+        public void SetConent(string jsonContent)
+        {
+           
+        }
+        public string GetContent()
+        {
+            return jsonDataProvider.GetContent();
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Adapter adapter = new Adapter(new LegacyCode());
+            NewGenClient newGenClient = new NewGenClient(adapter);
+            newGenClient.SetConent("Json content");
+            string jsonContent = newGenClient.GetContent();
+        }
+    }
+}
