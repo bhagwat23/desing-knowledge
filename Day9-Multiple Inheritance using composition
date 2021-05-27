@@ -1,0 +1,71 @@
+using System;
+
+namespace Day9_Example
+{
+    public interface IPrinter
+    {
+        void Print();
+    }
+    public interface IScanner
+    {
+        void Scan();
+    }
+    public class Printer : IPrinter
+    {
+        public void Print()
+        {
+            Console.WriteLine("Printer class - Print()");
+        }
+    }
+    public class Scanner : IScanner
+    {
+        public void Scan()
+        {
+            Console.WriteLine("Scanner class - scan()");
+        }
+    }
+    public class PrintScanner : IPrinter, IScanner
+    {
+        IPrinter printer;
+        IScanner scanner;
+        public PrintScanner()
+        {
+            printer = new Printer();
+            scanner = new Scanner();
+        }
+        public void Print()
+        {
+            printer.Print();           
+        }
+
+        public void Scan()
+        {
+            scanner.Scan();
+        }
+    }
+
+    public class PrintManager
+    {
+        public PrintManager(IPrinter printer)
+        {
+            printer.Print();
+        }
+    }
+    public class ScanManager
+    {
+        public ScanManager(IScanner scanner)
+        {
+            scanner.Scan();
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            new PrintManager(new Printer());
+            new ScanManager(new Scanner());
+            new PrintManager(new PrintScanner());
+            new ScanManager(new PrintScanner());
+        }
+    }
+}
