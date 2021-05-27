@@ -1,0 +1,82 @@
+using System;
+using System.Collections.Generic;
+
+namespace Day9_Command_Pattern
+{
+    public interface ICommand
+    {
+        void Execute();
+    }
+      
+    public class SaveCommandA : ICommand
+    {
+        public void Execute()
+        {
+            Console.WriteLine("Execute Save Command A");
+        }
+    }
+    public class SaveCommandB : ICommand
+    {
+        public void Execute()
+        {
+            Console.WriteLine("Execute Save Command B");
+        }
+    }
+    public class SaveCommandC : ICommand
+    {
+        public void Execute()
+        {
+            Console.WriteLine("Execute Save Command C");
+        }
+    }
+    public class SaveAllCommand : ICommand
+    {
+        List<ICommand> commandList;
+        public SaveAllCommand()
+        {
+            commandList = new List<ICommand>();
+        }
+        public void AddCommand(ICommand command)
+        {
+            commandList.Add(command);
+        }
+
+        public void Execute()
+        {
+            foreach (ICommand command in commandList)
+            {
+                command.Execute();
+            }
+        }
+    }
+
+    public class CommandSource
+    {
+        ICommand _command;
+        public void SetCommand(ICommand command)
+        {
+            _command = command;
+        }
+        public void Trigger()
+        {
+            _command.Execute();
+        }
+
+    }
+  
+    public class Program
+    {
+        static void Main(string[] args)
+        {
+            CommandSource source = new CommandSource();
+            source.SetCommand(new SaveCommandA());
+            source.Trigger();
+
+            SaveAllCommand saveAll = new SaveAllCommand();
+            saveAll.AddCommand(new SaveCommandA());
+            saveAll.AddCommand(new SaveCommandB());
+            saveAll.AddCommand(new SaveCommandC());
+            saveAll.Execute();
+        }
+    }
+}
